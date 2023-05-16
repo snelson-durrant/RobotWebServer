@@ -8,13 +8,12 @@
 #include "soc/rtc_cntl_reg.h"    // disable brownout problems
 #include "esp_http_server.h"
 
-// Replace with your network credentials
+// network credentials
 const char* ssid = "PorQueFi";
 const char* password = "idontknowjakedoestho";
 
-// Set your Static IP address
+// set static IP address
 IPAddress local_IP(192, 168, 1, 184);
-// Set your Gateway IP address
 IPAddress gateway(192, 168, 1, 1);
 IPAddress subnet(255, 255, 0, 0);
 
@@ -577,7 +576,7 @@ void setup() {
   delay(100);
   digitalWrite(FLASH_PIN, 0);
   
-  // Start streaming web server
+  // start streaming web server
   startCameraServer();
 }
 
