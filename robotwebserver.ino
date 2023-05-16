@@ -470,7 +470,6 @@ void setup() {
   }
   
   // Wi-Fi connection
-
   if(!WiFi.config(local_IP, gateway, subnet)) {
     Serial.println("STA Failed to configure");
   }
