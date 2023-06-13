@@ -9,8 +9,8 @@
 #include "esp_http_server.h"
 
 // network credentials
-const char* ssid = "PorQueFi";
-const char* password = "idontknowjakedoestho";
+const char* ssid = "ADD HERE";
+const char* password = "ADD HERE";
 
 // set static IP address
 IPAddress local_IP(192, 168, 1, 184);
