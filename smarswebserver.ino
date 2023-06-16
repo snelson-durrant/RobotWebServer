@@ -168,15 +168,7 @@ static esp_err_t stream_handler(httpd_req_t *req){
 
   res = httpd_resp_set_type(req, _STREAM_CONTENT_TYPE);
   if(res != ESP_OK){
-
-    digitalWrite(FLASH_PIN, 1);
-    delay(100);
-    digitalWrite(FLASH_PIN, 0);
-    delay(50);
-    digitalWrite(FLASH_PIN, 1);
-    delay(100);
-    digitalWrite(FLASH_PIN, 0);
-  
+    doubleFlash();
     return res;
   }
 
@@ -229,14 +221,7 @@ static esp_err_t stream_handler(httpd_req_t *req){
     }
     
     if(res != ESP_OK){
-      digitalWrite(FLASH_PIN, 1);
-      delay(100);
-      digitalWrite(FLASH_PIN, 0);
-      delay(50);
-      digitalWrite(FLASH_PIN, 1);
-      delay(100);
-      digitalWrite(FLASH_PIN, 0);
-      
+      doubleFlash();
       break;
     }
   }
@@ -255,14 +240,7 @@ static esp_err_t cmd_handler(httpd_req_t *req){
     
     if(!buf){
       httpd_resp_send_500(req);
-
-      digitalWrite(FLASH_PIN, 1);
-      delay(100);
-      digitalWrite(FLASH_PIN, 0);
-      delay(50);
-      digitalWrite(FLASH_PIN, 1);
-      delay(100);
-      digitalWrite(FLASH_PIN, 0);
+      doubleFlash();
     
       return ESP_FAIL;
     }
@@ -272,28 +250,14 @@ static esp_err_t cmd_handler(httpd_req_t *req){
       if (!(httpd_query_key_value(buf, "go", variable, sizeof(variable)) == ESP_OK)) {
         free(buf);
         httpd_resp_send_404(req);
-
-        digitalWrite(FLASH_PIN, 1);
-        delay(100);
-        digitalWrite(FLASH_PIN, 0);
-        delay(50);
-        digitalWrite(FLASH_PIN, 1);
-        delay(100);
-        digitalWrite(FLASH_PIN, 0);
+        doubleFlash();
         
         return ESP_FAIL;
       }
     } else {
       free(buf);
       httpd_resp_send_404(req);
-
-      digitalWrite(FLASH_PIN, 1);
-      delay(100);
-      digitalWrite(FLASH_PIN, 0);
-      delay(50);
-      digitalWrite(FLASH_PIN, 1);
-      delay(100);
-      digitalWrite(FLASH_PIN, 0);
+      doubleFlash();
       
       return ESP_FAIL;
     }
@@ -301,14 +265,7 @@ static esp_err_t cmd_handler(httpd_req_t *req){
     free(buf);
   } else {
     httpd_resp_send_404(req);
-
-    digitalWrite(FLASH_PIN, 1);
-    delay(100);
-    digitalWrite(FLASH_PIN, 0);
-    delay(50);
-    digitalWrite(FLASH_PIN, 1);
-    delay(100);
-    digitalWrite(FLASH_PIN, 0);
+    doubleFlash();
     
     return ESP_FAIL;
   }
@@ -357,14 +314,7 @@ static esp_err_t cmd_handler(httpd_req_t *req){
 
   if(res){
     return httpd_resp_send_500(req);
-
-    digitalWrite(FLASH_PIN, 1);
-    delay(100);
-    digitalWrite(FLASH_PIN, 0);
-    delay(50);
-    digitalWrite(FLASH_PIN, 1);
-    delay(100);
-    digitalWrite(FLASH_PIN, 0);
+    doubleFlash();
   }
 
   httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
@@ -458,13 +408,7 @@ void setup() {
   if (err != ESP_OK) {
     
     Serial.printf("Camera init failed with error 0x%x", err);
-    digitalWrite(FLASH_PIN, 1);
-    delay(100);
-    digitalWrite(FLASH_PIN, 0);
-    delay(50);
-    digitalWrite(FLASH_PIN, 1);
-    delay(100);
-    digitalWrite(FLASH_PIN, 0);
+    doubleFlash();
     
     return;
   }
@@ -484,12 +428,28 @@ void setup() {
   Serial.print("Camera Stream Ready! Go to: http://");
   Serial.println(WiFi.localIP());
 
-  digitalWrite(FLASH_PIN, 1);
-  delay(100);
-  digitalWrite(FLASH_PIN, 0);
+  singleFlash();
   
   // start streaming web server
   startCameraServer();
+}
+
+void doubleFlash() {
+  
+  digitalWrite(FLASH_PIN, 1);
+  delay(100);
+  digitalWrite(FLASH_PIN, 0);
+  delay(50);
+  digitalWrite(FLASH_PIN, 1);
+  delay(100);
+  digitalWrite(FLASH_PIN, 0);
+}
+
+void singleFlash() {
+  
+  digitalWrite(FLASH_PIN, 1);
+  delay(100);
+  digitalWrite(FLASH_PIN, 0);
 }
 
 void loop() {
